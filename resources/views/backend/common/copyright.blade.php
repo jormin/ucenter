@@ -1,0 +1,1 @@
+<div class="text-center out-links"><a href="http://blog.lerzen.com/" target="_blank">&copy; {{ date('Y').' '.config('app.name') }} </a></div>
