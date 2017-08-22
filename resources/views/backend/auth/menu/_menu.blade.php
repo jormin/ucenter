@@ -23,7 +23,7 @@
     </div>
     @if(count($menu->children)>0)
         <ol class="dd-list">
-            @each('admin.auth.menu._menu',$menu->children,'menu')
+            @each('backend.auth.menu._menu',$menu->children,'menu')
         </ol>
     @endif
 </li>

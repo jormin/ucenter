@@ -16,7 +16,7 @@
                     <div class="col-md-12 div-sm-12">
                         <div class="dd" id="list1">
                             <ol class="dd-list">
-                                @each('admin.auth.menu._menu',$menus,'menu')
+                                @each('backend.auth.menu._menu',$menus,'menu')
                             </ol>
                         </div>
                     </div>
