@@ -16,6 +16,7 @@ class MenusController extends Controller
 
     /**
      * MenusController constructor.
+     * @param MenusRepository $menuRepo
      */
     public function __construct(MenusRepository $menuRepo)
     {
@@ -33,7 +34,7 @@ class MenusController extends Controller
      */
     public function index()
     {
-        $menus = Menu::whereNull('pid')->paginate(30);
+        $menus = Menu::query()->whereNull('pid')->paginate(30);
         return view('backend.auth.menu.index',compact('menus'));
     }
 
@@ -44,9 +45,9 @@ class MenusController extends Controller
      */
     public function create()
     {
-        $pmenuOptions = Menu::whereNull('pid')->pluck('name','id')->toArray();
+        $pmenuOptions = Menu::query()->whereNull('pid')->pluck('name','id')->toArray();
         $pmenuOptions = array('0'=>'无') + $pmenuOptions;
-        $permissionOptions = Permission::pluck('display_name','id')->toArray();
+        $permissionOptions = Permission::query()->pluck('display_name','id')->toArray();
         $permissionOptions = array('0'=>'无') + $permissionOptions;
         return view('backend.auth.menu.create',compact('menus','pmenuOptions','permissionOptions'));
     }
@@ -64,17 +65,6 @@ class MenusController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
      * Show the form for editing the specified resource.
      *
      * @param  int  $id
@@ -82,10 +72,10 @@ class MenusController extends Controller
      */
     public function edit($id)
     {
-        $menu = Menu::findOrFail($id);
-        $pmenuOptions = Menu::whereNull('pid')->pluck('name','id')->toArray();
+        $menu = Menu::query()->findOrFail($id);
+        $pmenuOptions = Menu::query()->whereNull('pid')->pluck('name','id')->toArray();
         $pmenuOptions = array('0'=>'无') + $pmenuOptions;
-        $permissionOptions = Permission::pluck('display_name','id')->toArray();
+        $permissionOptions = Permission::query()->pluck('display_name','id')->toArray();
         $permissionOptions = array('0'=>'无') + $permissionOptions;
         return view('backend.auth.menu.edit',compact('menu','pmenuOptions','permissionOptions'));
     }

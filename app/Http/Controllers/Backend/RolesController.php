@@ -39,7 +39,7 @@ class RolesController extends Controller
             $query = $query->where('id','<>',1);
         }
         $roles = $query->paginate(30);
-        $perms = Permission::get();
+        $perms = Permission::query()->get();
     	return view('backend.auth.role.index',compact('roles','perms'));
     }
 
@@ -55,7 +55,7 @@ class RolesController extends Controller
             $query = $query->where('name','not like','%perms%')->where('name','not like','%menus%');
         }
         $permOptions = $query->pluck('display_name','id')->toArray();
-        $menuOptions = Menu::pluck('name','id')->toArray();
+        $menuOptions = Menu::query()->pluck('name','id')->toArray();
         return view('backend.auth.role.create',compact('permOptions','menuOptions'));
     }
 
@@ -82,7 +82,7 @@ class RolesController extends Controller
         if(!Auth::user()->hasRole('admin') && $id == 1){
             abort(403);
         }
-        $role = Role::findOrFail($id);
+        $role = Role::query()->findOrFail($id);
         $query = Permission::query();
         if(!Auth::user()->hasRole('admin')){
             $query = $query->where('name','not like','%perms%')->where('name','not like','%menus%');

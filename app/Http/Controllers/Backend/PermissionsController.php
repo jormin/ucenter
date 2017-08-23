@@ -30,7 +30,7 @@ class PermissionsController extends Controller
      * 权限列表
      */
     public function index(){
-        $perms = Permission::paginate(30);
+        $perms = Permission::query()->paginate(30);
         return view('backend.auth.perm.index',compact('perms'));
     }
 
@@ -64,8 +64,8 @@ class PermissionsController extends Controller
      */
     public function edit($id)
     {
-        $perm = Permission::findOrFail($id);
-        $permOptions = Permission::pluck('display_name','id')->toArray();
+        $perm = Permission::query()->findOrFail($id);
+        $permOptions = Permission::query()->pluck('display_name','id')->toArray();
         return view('backend.auth.perm.edit',compact('perm','permOptions'));
     }
 

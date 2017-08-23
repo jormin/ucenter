@@ -17,7 +17,7 @@ class MenusRepository
      */
     public function createMenu($request)
     {
-        $menu = Menu::create([
+        $menu = Menu::query()->create([
             'pid' => $request->pid ? : null,
             'name' => $request->name,
             'icon' => $request->icon,
@@ -36,7 +36,7 @@ class MenusRepository
     public function updateMenu($request,$id)
     {
         $pid = $request->pid ? : null;
-        $menu = Menu::findOrFail($id);
+        $menu = Menu::query()->findOrFail($id);
         $properties = [
             'old' => $menu
         ];
@@ -48,7 +48,7 @@ class MenusRepository
         $menu->save();
         $properties['new'] = $menu;
         if($pid){
-            Menu::where('pid',$menu->id)->update(['pid'=>null]);
+            Menu::query()->where('pid',$menu->id)->update(['pid'=>null]);
         }
         activity()->on($menu)->withProperties($properties)->log('编辑菜单['.$request->name.']成功');
     }
@@ -61,7 +61,7 @@ class MenusRepository
      */
     public function deleteMenu($id)
     {
-        $menu = Menu::find($id);
+        $menu = Menu::query()->find($id);
         $menu->roles()->detach();
         $menu->delete();
         activity()->on($menu)->log('删除菜单['.$menu->name.']成功');

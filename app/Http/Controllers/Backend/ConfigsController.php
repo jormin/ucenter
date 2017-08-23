@@ -31,18 +31,8 @@ class ConfigsController extends Controller
      */
     public function index($type = 'size')
     {
-        $configs = Config::where('type',strtoupper($type))->orderBy(DB::raw('abs(value)'))->get();
+        $configs = Config::query()->where('type',strtoupper($type))->orderBy(DB::raw('abs(value)'))->get();
         return view('backend.config.index',compact('configs','type'));
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
     }
 
     /**
@@ -55,40 +45,6 @@ class ConfigsController extends Controller
     {
         $this->configRepo->createConfig($request);
         return redirect()->back()->with('success','添加配置项成功');
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
     }
 
     /**
@@ -109,7 +65,7 @@ class ConfigsController extends Controller
      * @param $id
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function default($id)
+    public function setDefault($id)
     {
         $this->configRepo->defaultConfig($id);
         return redirect()->back()->with('success','设为默认成功');

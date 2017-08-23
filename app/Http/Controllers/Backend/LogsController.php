@@ -31,7 +31,7 @@ class LogsController extends Controller
      * @return array
      */
     protected function logList(){
-        $query = Activity::orderBy('created_at','desc');
+        $query = Activity::query()->orderBy('created_at','desc');
         $subjectOptions = [
             '0'=>'类型',
             'Member'=>'客户',
@@ -105,7 +105,7 @@ class LogsController extends Controller
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function signin(){
-        $logs = SigninLog::where('user_id',Auth::user()->id)->orderBy('login_time','desc')->paginate(30);
+        $logs = SigninLog::query()->where('user_id',Auth::id())->orderBy('login_time','desc')->paginate(30);
         return view('backend.logs.signin',compact('logs'));
     }
 
@@ -113,8 +113,7 @@ class LogsController extends Controller
      * 文件导出
      */
     public function export(){
-        $logs = Export::orderBy('created_at','desc')->paginate(30);
+        $logs = Export::query()->orderBy('created_at','desc')->paginate(30);
         return view('backend.logs.export',compact('logs'));
-
     }
 }

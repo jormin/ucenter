@@ -15,7 +15,7 @@ class PermissionsRepository
     public function createPermission($request)
     {
 
-        $perm = Permission::create([
+        $perm = Permission::query()->create([
             'name' => $request->name,
             'display_name' => $request->display_name,
             'description' => $request->description,
@@ -31,7 +31,7 @@ class PermissionsRepository
      */
     public function updatePermission($request,$id)
     {
-        $perm = Permission::findOrFail($id);
+        $perm = Permission::query()->findOrFail($id);
         $properties = [
             'old' => $perm
         ];
@@ -53,7 +53,7 @@ class PermissionsRepository
      */
     public function deletePermission($id)
     {
-        $perm = Permission::findOrFail($id);
+        $perm = Permission::query()->findOrFail($id);
         $perm->roles()->detach();
         $perm->delete();
         activity()->on($perm)->log('删除权限['.$perm->name.']成功');

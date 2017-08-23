@@ -43,7 +43,7 @@ class UsersController extends Controller
      */
     public function update(UpdateUserRequest $request, $id)
     {
-        $this->repo->updateUser($request,Auth::user()->id);
+        $this->repo->updateUser($request,Auth::id());
         return redirect()->back()->with('success','修改个人资料成功');
     }
 
@@ -64,13 +64,13 @@ class UsersController extends Controller
      */
     public function changePassword(ChangePasswordRequest $request)
     {
-        $password_old = $request->password_old;
+        $password_old = $request->input('password_old');
         $validator = Validator::make($request->all(),$request->rules(),$request->messages());
         if(!Hash::check($password_old,Auth::user()->password)){
             $validator->errors()->add('password_old', '旧密码错误');
             return redirect('/?tab=password')->withErrors($validator);
         }
-        $this->repo->changePassword($request,Auth::user()->id);
+        $this->repo->changePassword($request,Auth::id());
         Auth::logout();
         return redirect(route('login'))->with('success','修改密码成功，请重新登录');
     }

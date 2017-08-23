@@ -15,7 +15,7 @@ class RolesRepository
     public function createRole($request)
     {
 
-        $role = Role::create([
+        $role = Role::query()->create([
             'name' => $request->name,
             'display_name' => $request->display_name,
             'description' => $request->description,
@@ -35,7 +35,7 @@ class RolesRepository
      */
     public function updateRole($request,$id)
     {
-        $role = Role::findOrFail($id);
+        $role = Role::query()->findOrFail($id);
         $properties = [
             'old' => $role
         ];
@@ -59,7 +59,7 @@ class RolesRepository
      */
     public function deleteRole($id)
     {
-        $role = Role::findOrFail($id);
+        $role = Role::query()->findOrFail($id);
         $role->users()->detach();
         $role->perms()->detach();
         $role->menus()->detach();

@@ -19,7 +19,7 @@ class IndexController extends Controller
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function index(){
-        $logs = Activity::where('causer_id', Auth::user()->id)->orderBy('created_at','desc')->paginate(10);
+        $logs = Activity::query()->where('causer_id', Auth::id())->orderBy('created_at','desc')->paginate(10);
         $count = collect();
     	return view('backend.index',compact('logs','count'));
     }

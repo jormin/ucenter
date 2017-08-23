@@ -39,7 +39,7 @@ class AdminsController extends Controller
             $query = $query->where('id','<>',1);
         }
         $admins = $query->paginate(30);
-        $roles = Role::get();
+        $roles = Role::query()->get();
         return view('backend.auth.admin.index',compact('admins','roles'));
     }
 
@@ -71,18 +71,6 @@ class AdminsController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-//        $admin = User::findOrFail($id);
-//        return view('backend.auth.admin.show',compact('admin'));
-    }
-
-    /**
      * Show the form for editing the specified resource.
      *
      * @param  int  $id
@@ -93,7 +81,7 @@ class AdminsController extends Controller
         if(!Auth::user()->hasRole('admin') && $id == 1){
             abort(403);
         }
-        $admin = User::findOrFail($id);
+        $admin = User::query()->findOrFail($id);
         $query = Role::query();
         if(!Auth::user()->hasRole('admin')){
             $query = $query->where('id','<>','1');
@@ -144,7 +132,7 @@ class AdminsController extends Controller
     public function active(ActiveAdminRequest $request, $id){
         $this->userRepo->activeUser($request, $id);
         $msg = '账号成功';
-        if($request->is_active){
+        if($request->input('is_active')){
             $msg = '激活'.$msg;
         }else{
             $msg = '关闭'.$msg;

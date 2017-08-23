@@ -30,14 +30,14 @@ class UsersRepository
         if($request->hasFile('avatar')){
             $data['avatar'] = $request->file('avatar')->store('avatars');
         }
-        $user = User::create($data);
+        $user = User::query()->create($data);
 
         activity()->on($user)->log('创建账号['.$request->username.']成功');
 
         $roles = $request->roles;
         if($roles){
             foreach ($roles as $roleId){
-                $role = Role::find($roleId);
+                $role = Role::query()->find($roleId);
                 if($role){
                     $role->users()->attach($user->id);
                 }
@@ -54,7 +54,7 @@ class UsersRepository
      */
     public function updateUser($request,$id)
     {
-        $user = User::findOrFail($id);
+        $user = User::query()->findOrFail($id);
         $properties = [
             'old' => $user
         ];
@@ -81,7 +81,7 @@ class UsersRepository
      * @param $id
      */
     public function updateUserRoles($request,$id){
-        $user = User::findOrFail($id);
+        $user = User::query()->findOrFail($id);
         if($roles = $request->roles){
             $user->roles()->sync($roles);
         }else{
@@ -98,7 +98,7 @@ class UsersRepository
      */
     public function deleteUser($id)
     {
-        $user = User::findOrFail($id);
+        $user = User::query()->findOrFail($id);
         $user->roles()->detach();
         $user->delete();
         activity()->on($user)->log('删除账号['.$user->username.']成功');
@@ -112,7 +112,7 @@ class UsersRepository
      */
     public function activeUser($request,$id)
     {
-        $user = User::findOrFail($id);
+        $user = User::query()->findOrFail($id);
         $user->is_active = $request->is_active;
         $user->save();
         $log = '账号['.$user->username.']成功';
@@ -130,7 +130,7 @@ class UsersRepository
      * @param $id
      */
     public function changePassword($request,$id){
-        $user = User::findOrFail($id);
+        $user = User::query()->findOrFail($id);
         $user->password = bcrypt($request->password);
         $user->save();
         activity()->on($user)->log('修改账号['.$user->username.']密码成功');
@@ -142,7 +142,7 @@ class UsersRepository
      * @return mixed
      */
     public function options(){
-        return User::pluck('name','id')->toArray();
+        return User::query()->pluck('name','id')->toArray();
     }
 
 }

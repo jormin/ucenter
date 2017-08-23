@@ -31,7 +31,7 @@ Route::group(['middleware'=>['auth'],'namespace'=>'Backend'],function(){
 
     // 系统设置
     Route::get('configs/option/{type?}',['as'=>'configs.option','uses'=>'ConfigsController@index']);
-    Route::post('configs/default/{config}',['as'=>'configs.default','uses'=>'ConfigsController@default']);
+    Route::post('configs/default/{config}',['as'=>'configs.default','uses'=>'ConfigsController@setDefault']);
     Route::resource('configs','ConfigsController');
 
 

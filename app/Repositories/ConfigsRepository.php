@@ -12,11 +12,11 @@ class ConfigsRepository
     /**
      * 添加配置
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param $request
      */
     public function createConfig($request)
     {
-        $config = Config::create([
+        $config = Config::query()->create([
             'type' => strtoupper($request->type),
             'value' => $request->value
         ]);
@@ -31,7 +31,7 @@ class ConfigsRepository
      */
     public function deleteConfig($id)
     {
-        $config = Config::findOrFail($id);
+        $config = Config::query()->findOrFail($id);
         $config->delete();
         activity()->on($config)->log('删除配置['.strtoupper($config->type).':'.$config->value.']成功');
     }
@@ -42,8 +42,8 @@ class ConfigsRepository
      * @param $id
      */
     public function defaultConfig($id){
-        $config = Config::findOrFail($id);
-        Config::where('type',$config->type)->update(['default'=>0]);
+        $config = Config::query()->findOrFail($id);
+        Config::query()->where('type',$config->type)->update(['default'=>0]);
         $config->default = 1;
         $config->save();
         activity()->on($config)->log('设置配置['.strtoupper($config->type).':'.$config->value.']为默认项成功');
@@ -56,7 +56,7 @@ class ConfigsRepository
      * @return mixed
      */
     public function options($type){
-        return Config::where('type',$type)->orderBy(DB::raw('abs(value)'))->pluck('value')->toArray();
+        return Config::query()->where('type',$type)->orderBy(DB::raw('abs(value)'))->pluck('value')->toArray();
     }
 
     /**
@@ -66,7 +66,7 @@ class ConfigsRepository
      * @return mixed
      */
     public function defaultOption($type){
-        return Config::where('type',$type)->where('default',1)->pluck('value')->first();
+        return Config::query()->where('type',$type)->where('default',1)->pluck('value')->first();
     }
 
 }
