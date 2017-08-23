@@ -13,6 +13,6 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::group(['namespace'=>'Api'],function(){
-    Route::post('login',['as'=>'auth.login','uses'=>'AuthController@login']);
+Route::group(['namespace'=>'Api', 'prefix'=>'v1'],function(){
+    Route::post('auth/login',['as'=>'auth.login','uses'=>'AuthController@login']);
 });
